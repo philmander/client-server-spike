@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "test" : "tap index.test"
+  },
+  "devDependencies": {
+    "tap": "^16.2.0"
+  }
+}
