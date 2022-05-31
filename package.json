@@ -1,8 +1,12 @@
 {
   "scripts": {
-    "test" : "tap index.test"
+    "test": "mocha index.test.js"
   },
   "devDependencies": {
+    "mocha": "^10.0.0",
     "tap": "^16.2.0"
+  },
+  "dependencies": {
+    "server": "^1.0.37"
   }
 }
