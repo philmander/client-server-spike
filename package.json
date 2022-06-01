@@ -1,9 +1,10 @@
 {
   "scripts": {
-    "start" : "node app/server",
-    "test": "mocha app/client.test.js"
+    "start": "node app/server",
+    "test": "mocha app/client.js"
   },
   "devDependencies": {
+    "express": "^4.18.1",
     "mocha": "^10.0.0",
     "tap": "^16.2.0"
   },

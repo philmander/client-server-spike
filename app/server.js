@@ -1,17 +1,50 @@
-function add() {
-  return '20'
+const bridge = {
+  methods: {},
+  register: function() {
+    let method, name
+    if(arguments.length === 1) {
+      method = arguments[0]
+      name = method.name
+    } else if(arguments.length == 2) {
+      method = arguments[1]
+      name = arguments[0]
+    }
+    this.methods[name] = method
+  },
+  hasMethod: function(name) {
+    return this.methods.hasOwnProperty(name)
+  },
 }
 
-const http = require('http');
+bridge.register(function add() {
+  return 20
+})
 
-const requestListener = function (req, res) {
-  const data = {
-    result: 20
+const express = require('express')
+const { log } = console
+
+const app = express()
+const port = 3000
+app.use(express.json())
+
+app.use((req, res, next) => {
+  if(req.url === '/jsonrpc-bridge') {
+    const { method, params, id } = req.body
+    const send = {
+      jsonrpc: '2.0',
+      id,
+    }
+    
+    if(bridge.hasMethod(method)) {
+      send.result = bridge.methods[method].call()
+    }
+
+    res.send(send)
+  } else {
+    next()
   }
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'application/json');
-  res.end(JSON.stringify(data));
-}
+})
 
-const server = http.createServer(requestListener);
-server.listen(3000);
+app.listen(port, () => {
+  log(`Express server is running on port: ${port}`)
+})
