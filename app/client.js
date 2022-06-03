@@ -20,4 +20,13 @@ describe('Direct server calls', function () {
     const val = await bridge.concat({ foo: 'foo', bar: 'bar'})
     assert.equal(val, 'foobar')
   })
+
+  it('it throws if the method was not found', async () => {
+    try {
+      await bridge.lalala();
+      assert.fail('Missing method was found!')
+    } catch(err) {
+      assert.equal(err.message, 'foo')
+    }
+  })
 })

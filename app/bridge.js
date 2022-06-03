@@ -15,8 +15,14 @@ async function rpc(method, params) {
     },
     body: JSON.stringify(body),
   })
-  const data = await res.json()
-  return data.result
+
+  if(res.status === 200) {
+    const data = await res.json()
+    return data.result
+  }
+
+  throw new Error('nothing works')
+  
 }
 
 const handler = {
