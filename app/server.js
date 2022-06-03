@@ -19,6 +19,17 @@ const bridge = {
 bridge.register(function add() {
   return 20
 })
+bridge.register(function multiply(num1, num2) {
+  return num1 * num2
+})
+
+bridge.register(function multiply(num1, num2) {
+  return num1 * num2
+})
+
+bridge.register(function concat({ foo, bar }) {
+  return `${foo}${bar}`
+})
 
 const express = require('express')
 const { log } = console
@@ -34,9 +45,9 @@ app.use((req, res, next) => {
       jsonrpc: '2.0',
       id,
     }
-    
+
     if(bridge.hasMethod(method)) {
-      send.result = bridge.methods[method].call()
+      send.result = bridge.methods[method](...params)
     }
 
     res.send(send)

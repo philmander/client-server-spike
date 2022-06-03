@@ -1,8 +1,8 @@
-async function rpc(method) {
+async function rpc(method, params) {
   const body = {
     jsonrpc: '2.0',
     method,
-    params: [],
+    params,
     id: 'xxx',
   }
 
@@ -13,13 +13,14 @@ async function rpc(method) {
     },
     body: JSON.stringify(body),
   })
-  return await res.json()
+  const data = await res.json()
+  return data.result
 }
 
 const handler = {
   get(obj, prop) {
     return async function() {
-      return rpc(prop)
+      return rpc(prop, [ ...arguments ])
     }
   },
 }
