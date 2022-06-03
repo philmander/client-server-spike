@@ -1,9 +1,11 @@
+const crypto = require('crypto')
+
 async function rpc(method, params) {
   const body = {
     jsonrpc: '2.0',
     method,
     params,
-    id: 'xxx',
+    id: crypto.randomUUID(),
   }
 
   const res = await fetch('http://localhost:3000/jsonrpc-bridge', {
