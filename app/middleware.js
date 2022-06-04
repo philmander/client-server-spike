@@ -1,3 +1,5 @@
+const { type } = require("server/reply")
+
 const errorCodes = {
   INVALID_REQUEST: '-32600',
   METHOD_NOT_FOUND: '-32601',
@@ -8,24 +10,39 @@ const JSONRPC_VERSION = '2.0'
 
 const bridge = {
   methods: {
-    '__TEST_BAD_RESPONSE_ID': () => null
+    '__TEST_BAD_RESPONSE_ID': { fn: () => null, ctx: null }
   },
+  // 1. register(fn)
+  // 2. register(fn, context)
+  // 3. register(name, fn)
+  // 3. register(name, fn, context)
   register: function () {
-    let method, name
-    if (arguments.length === 1) {
-      method = arguments[0]
-      name = method.name
-    } else if (arguments.length == 2) {
-      method = arguments[1]
+    let fn, name, ctx = null
+    if(typeof arguments[0] === 'function') {
+      fn = arguments[0]
+      name = fn.name
+      if(arguments[1]) {
+        ctx = arguments[1]
+      }
+    } else if(typeof arguments[0] === 'string' && typeof arguments[1] === 'function') {
+      fn = arguments[1]
       name = arguments[0]
+      if(arguments[2]) {
+        ctx = arguments[1]
+      }
+    } else {
+      throw new Error('Bad arguments given to register')
     }
-    this.methods[name] = method
+    this.methods[name] = {
+      fn,
+      ctx,
+    }
   },
   hasMethod: function (name) {
     return this.methods.hasOwnProperty(name)
   },
   middleware: function() {
-    
+
     function sendError(res, status, id, code, message) {
       return res.status(status).send({
         id,
@@ -54,7 +71,6 @@ const bridge = {
         }
         if (!bridge.hasMethod(method)) {
           return sendError(res, 400, id, errorCodes.METHOD_NOT_FOUND, `Method not found: ${method}`)
-
         }
 
         // ok, send response
@@ -64,7 +80,8 @@ const bridge = {
         }
     
         try {
-          send.result = this.methods[method](...params)
+          const { fn, ctx } = this.methods[method]
+          send.result = fn.call(ctx, ...params)
         } catch(err) {
           return sendError(res, 500, id, errorCodes.INTERNAL_ERROR, `Internal server error: ${err.message}`)
         }

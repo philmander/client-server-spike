@@ -19,6 +19,34 @@ bridge.register(function somethingWrong() {
   throw new Error('something wrong')
 });
 
+let something;
+bridge.register(function changeSomething() {
+  something = 'hello world'
+});
+bridge.register(function getSomething() {
+  return something;
+});
+bridge.register(function resetSomething() {
+  something = 'hello'
+});
+
+class Rectangle {
+  constructor(height, width) {
+    this.height = parseInt(height);
+    this.width = parseInt(width);
+  }
+
+  // Method
+  calcArea() {
+    const area =  this.height * this.width;
+    return area;
+  }
+}
+
+const rect = new Rectangle(50, 40)
+
+bridge.register(rect.calcArea, rect);
+
 const express = require('express')
 const { log } = console
 

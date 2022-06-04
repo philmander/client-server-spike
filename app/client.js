@@ -21,6 +21,20 @@ describe('Direct server calls', function () {
     assert.equal(val, 'foobar')
   })
 
+  it('can call a void function', async () => {
+    await bridge.resetSomething()
+    let val = await bridge.getSomething()
+    assert.equal(val, 'hello')
+    await bridge.changeSomething()
+    val = await bridge.getSomething()
+    assert.equal(val, 'hello world')
+  })
+
+  it('calls a method that needs context', async () => {
+    const area = await bridge.calcArea()
+    assert.equal(area, 2000)
+  })
+
   it('throws if the method was not found', async () => {
     try {
       await bridge.lalala();
