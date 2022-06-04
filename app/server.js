@@ -15,6 +15,10 @@ bridge.register(function concat({ foo, bar }) {
   return `${foo}${bar}`
 })
 
+bridge.register(function somethingWrong() {
+  throw new Error('something wrong')
+});
+
 const express = require('express')
 const { log } = console
 

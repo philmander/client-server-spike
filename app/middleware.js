@@ -7,7 +7,9 @@ const errorCodes = {
 const JSONRPC_VERSION = '2.0'
 
 const bridge = {
-  methods: {},
+  methods: {
+    '__TEST_BAD_RESPONSE_ID': () => null
+  },
   register: function () {
     let method, name
     if (arguments.length === 1) {
@@ -23,9 +25,10 @@ const bridge = {
     return this.methods.hasOwnProperty(name)
   },
   middleware: function() {
-
-    function sendError(res, status, code, message) {
+    
+    function sendError(res, status, id, code, message) {
       return res.status(status).send({
+        id,
         code,
         message,
       })
@@ -44,28 +47,28 @@ const bridge = {
           missing = 'id'
         }
         if(missing) {
-          return sendError(res, 400, errorCodes.INVALID_REQUEST, `Invalid request: missing ${missing}`)
+          return sendError(res, 400, id, errorCodes.INVALID_REQUEST, `Invalid request: missing ${missing}`)
         }
         if(jsonrpc !== JSONRPC_VERSION) {
-          return sendError(res, 400, errorCodes.INVALID_REQUEST, `Invalid request: wrong jsonrpc version (${jsonrpc})`)
+          return sendError(res, 400, id, errorCodes.INVALID_REQUEST, `Invalid request: wrong jsonrpc version (${jsonrpc})`)
+        }
+        if (!bridge.hasMethod(method)) {
+          return sendError(res, 400, id, errorCodes.METHOD_NOT_FOUND, `Method not found: ${method}`)
+
         }
 
         // ok, send response
         const send = {
           jsonrpc: JSONRPC_VERSION,
-          id,
+          id: method === '__TEST_BAD_RESPONSE_ID' ? 'bad_id_123' : id,
         }
     
-        if (bridge.hasMethod(method)) {
-          try {
-            send.result = this.methods[method](...params)
-          } catch(err) {
-            return sendError(res, 500, errorCodes.INTERNAL_ERROR, err.message)
-          }
-        } else {
-          return sendError(res, 400, errorCodes.METHOD_NOT_FOUND, `Method not found: ${method}`)
+        try {
+          send.result = this.methods[method](...params)
+        } catch(err) {
+          return sendError(res, 500, id, errorCodes.INTERNAL_ERROR, `Internal server error: ${err.message}`)
         }
-    
+  
         res.status(200).send(send)
       } else {
         next()

@@ -1,11 +1,12 @@
 const crypto = require('crypto')
 
-async function rpc(method, params) {
+async function rpc(method, params, __test) {
+  const id = crypto.randomUUID()
   const body = {
     jsonrpc: '2.0',
     method,
     params,
-    id: crypto.randomUUID(),
+    id,
   }
 
   const res = await fetch('http://localhost:3000/jsonrpc-bridge', {
@@ -16,13 +17,19 @@ async function rpc(method, params) {
     body: JSON.stringify(body),
   })
 
-  if(res.status === 200) {
-    const data = await res.json()
-    return data.result
+  const data = await res.json()
+
+  if(id !== data.id) {
+    throw new Error('JSON RPC error: Response id does not match request id')
   }
 
-  throw new Error('nothing works')
-  
+  if(res.status < 300) {
+    return data.result
+  } else if(res.status >= 400) {
+    const msg = data.code ? 
+    `JSON RPC error (${data.code}): ${data.message}` : `An unknown JSON RPC error occurred`
+    throw new Error(msg)
+  }
 }
 
 const handler = {

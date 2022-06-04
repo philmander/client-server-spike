@@ -21,12 +21,30 @@ describe('Direct server calls', function () {
     assert.equal(val, 'foobar')
   })
 
-  it('it throws if the method was not found', async () => {
+  it('throws if the method was not found', async () => {
     try {
       await bridge.lalala();
-      assert.fail('Missing method was found!')
+      assert.fail('Shouldnt get this far. Missing method error was not thrown!')
     } catch(err) {
-      assert.equal(err.message, 'foo')
+      assert.equal(err.message, 'JSON RPC error (-32601): Method not found: lalala')
+    }
+  })
+
+  it('throws if there was an internal server error', async () => {
+    try {
+      await bridge.somethingWrong();
+      assert.fail('Shouldnt get this far. Internal error was not thrown!')
+    } catch(err) {
+      assert.equal(err.message, 'JSON RPC error (-32603): Internal server error: something wrong')
+    }
+  })
+
+  it('throws if there was an id mismatch', async () => {
+    try {
+      await bridge.__TEST_BAD_RESPONSE_ID();
+      assert.fail('Shouldnt get this far. Internal error was not thrown!')
+    } catch(err) {
+      assert.equal(err.message, 'JSON RPC error: Response id does not match request id')
     }
   })
 })
