@@ -1,4 +1,4 @@
-const bridge = require('./middleware')()
+const bridge = require('..')()
 
 bridge.register(function add() {
   return 20

@@ -1,5 +1,3 @@
-const { type } = require("server/reply")
-
 const errorCodes = {
   INVALID_REQUEST: '-32600',
   METHOD_NOT_FOUND: '-32601',

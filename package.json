@@ -1,14 +1,16 @@
 {
+  
+  "name" : "magic-bridge",
+  "source": "app/client.js",
+  "main": "dist/main.js",
   "scripts": {
-    "start": "node app/server",
-    "test": "mocha app/client.js"
+    "start": "node app/spec/server",
+    "test": "mocha app/spec/e2e.spec.js",
+    "build": "parcel build"
   },
   "devDependencies": {
     "express": "^4.18.1",
     "mocha": "^10.0.0",
-    "tap": "^16.2.0"
-  },
-  "dependencies": {
-    "server": "^1.0.37"
+    "parcel": "^2.6.0"
   }
 }

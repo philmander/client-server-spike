@@ -1,5 +1,7 @@
 const crypto = require('crypto')
 
+let url =  '/jsonrpc-bridge'
+
 async function rpc(method, params) {
   const id = crypto.randomUUID()
   const body = {
@@ -9,7 +11,7 @@ async function rpc(method, params) {
     id,
   }
 
-  const res = await fetch('http://localhost:3000/jsonrpc-bridge', {
+  const res = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -40,6 +42,9 @@ const handler = {
   },
 }
 
-module.exports = {
-  bridge: new Proxy({}, handler),
+module.exports =  (opts = {}) => {
+  if(opts.url) {
+    url = opts.url
+  }
+  return new Proxy({}, handler)
 }
