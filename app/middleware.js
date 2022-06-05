@@ -9,6 +9,10 @@ const errorCodes = {
 const JSONRPC_VERSION = '2.0'
 
 module.exports = function(opts = {}) {
+  const {
+    path = '/jsonrpc-bridge'
+  } = opts
+
   return {
     methods: {
       '__TEST_BAD_RESPONSE_ID': { fn: () => null, ctx: null }
@@ -53,11 +57,11 @@ module.exports = function(opts = {}) {
       }
 
       return function(req, res, next) {
-        if(req.url === '/jsonrpc-bridge') {
+        if(req.url === path) {
           const { jsonrpc, method, params, id } = req.body
 
           // errors
-          let missing;
+          let missing
           if(!method) {
             missing = 'method'
           }
@@ -75,19 +79,19 @@ module.exports = function(opts = {}) {
           }
 
           // ok, send response
-          const send = {
+          const toSend = {
             jsonrpc: JSONRPC_VERSION,
             id: method === '__TEST_BAD_RESPONSE_ID' ? 'bad_id_123' : id,
           }
       
           try {
             const { fn, ctx } = this.methods[method]
-            send.result = fn.call(ctx, ...params)
+            toSend.result = fn.call(ctx, ...params)
           } catch(err) {
             return sendError(res, 500, id, errorCodes.INTERNAL_ERROR, `Internal server error: ${err.message}`)
           }
     
-          res.status(200).send(send)
+          res.status(200).send(toSend)
         } else {
           next()
         }
