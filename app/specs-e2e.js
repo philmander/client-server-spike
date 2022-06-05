@@ -1,6 +1,6 @@
 const mocha = require('mocha')
 const assert = require('assert')
-const bridge = require('./bridge')
+const { bridge, all } = require('./bridge')
 
 describe('Direct server calls', function () {
   it('calls a method on the server', async () => {

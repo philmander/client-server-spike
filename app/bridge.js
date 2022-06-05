@@ -1,6 +1,6 @@
 const crypto = require('crypto')
 
-async function rpc(method, params, __test) {
+async function rpc(method, params) {
   const id = crypto.randomUUID()
   const body = {
     jsonrpc: '2.0',
@@ -40,4 +40,6 @@ const handler = {
   },
 }
 
-module.exports = new Proxy({}, handler)
+module.exports = {
+  bridge: new Proxy({}, handler),
+}
