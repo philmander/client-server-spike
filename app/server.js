@@ -6,15 +6,9 @@ bridge.register(function add() {
 bridge.register(function multiply(num1, num2) {
   return num1 * num2
 })
-
-bridge.register(function multiply(num1, num2) {
-  return num1 * num2
-})
-
 bridge.register(function concat({ foo, bar }) {
   return `${foo}${bar}`
 })
-
 bridge.register(function somethingWrong() {
   throw new Error('something wrong')
 });
@@ -38,14 +32,17 @@ class Rectangle {
 
   // Method
   calcArea() {
-    const area =  this.height * this.width;
-    return area;
+    return this.height * this.width;
+  }
+
+  calcPerimeter() {
+    return (this.height * 2) + (this.width * 2)
   }
 }
 
 const rect = new Rectangle(50, 40)
 
-bridge.register(rect.calcArea, rect);
+bridge.register(rect);
 
 const express = require('express')
 const { log } = console

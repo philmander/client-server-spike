@@ -10,7 +10,9 @@ const JSONRPC_VERSION = '2.0'
 
 module.exports = function(opts = {}) {
   const {
-    path = '/jsonrpc-bridge'
+    path = '/jsonrpc-bridge',
+    ignoreMethodNameRegex = /^_/,
+    throwOnDup = true,
   } = opts
 
   return {
@@ -20,23 +22,43 @@ module.exports = function(opts = {}) {
     // 1. register(fn)
     // 2. register(fn, context)
     // 3. register(name, fn)
-    // 3. register(name, fn, context)
+    // 4. register(name, fn, context)
+    // 5. register(new Class())
     register: function () {
       let fn, name, ctx = null
+      // 1 + 2
       if(typeof arguments[0] === 'function') {
         fn = arguments[0]
         name = fn.name
         if(arguments[1]) {
           ctx = arguments[1]
         }
-      } else if(typeof arguments[0] === 'string' && typeof arguments[1] === 'function') {
+      } 
+      // 2 + 3
+      else if(typeof arguments[0] === 'string' && typeof arguments[1] === 'function') {
         fn = arguments[1]
         name = arguments[0]
         if(arguments[2]) {
           ctx = arguments[1]
         }
+      } 
+      // 5
+      else if(typeof arguments[0] === 'object') {
+        const inst = arguments[0]
+        for(let key of Object.getOwnPropertyNames(Object.getPrototypeOf(inst))) {
+          if(key === 'constructor') {
+            continue
+          }
+          if(typeof inst[key] === 'function' && !(ignoreMethodNameRegex.test(key.name))) {
+            this.register(inst[key], inst)
+          }
+        }
       } else {
         throw new Error('Bad arguments given to register')
+      }
+      
+      if(throwOnDup && this.hasMethod(name)) {
+        throw new Error(`A jsonprc method has already been registered with the name "${name}"`)
       }
       this.methods[name] = {
         fn,
