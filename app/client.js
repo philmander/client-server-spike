@@ -1,9 +1,14 @@
-const crypto = require('crypto')
-
 let url =  '/jsonrpc-bridge'
 
+function randomUUID() {
+  const url = URL.createObjectURL(new Blob())
+  const [id] = url.toString().split('/').reverse()
+  URL.revokeObjectURL(url)
+  return id 
+}
+
 async function rpc(method, params) {
-  const id = crypto.randomUUID()
+  const id = randomUUID()
   const body = {
     jsonrpc: '2.0',
     method,
