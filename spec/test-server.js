@@ -1,4 +1,6 @@
-const bridge = require('..')()
+process.title = 'magic-bridge-test-server'
+
+const bridge = require('../bridge')()
 
 bridge.register(function add() {
   return 20

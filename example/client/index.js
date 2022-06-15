@@ -1,7 +1,7 @@
 import { h, Component, render } from 'preact'
 import { useState, useEffect } from 'preact/hooks'
 
-import magic from '../../app/client'
+import magic from '../../client/dist/main'
 
 const bridge = magic()
 

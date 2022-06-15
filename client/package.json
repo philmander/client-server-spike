@@ -1,0 +1,12 @@
+{
+  "name": "@magic-bridge/client",
+  "version": "0.1.0",
+  "source": "index.js",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "parcel build"
+  },
+  "devDependencies": {
+    "parcel": "^2.6.0"
+  }
+}
