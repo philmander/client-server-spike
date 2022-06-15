@@ -24,6 +24,10 @@ bridge.register(function resetSomething() {
   something = 'hello'
 });
 
+bridge.register(function saveUser(_session_, email) {
+  return `${email}_${_session_.userId}`
+})
+
 class Rectangle {
   constructor(height, width) {
     this.height = parseInt(height);
@@ -45,11 +49,20 @@ const rect = new Rectangle(50, 40)
 bridge.register(rect);
 
 const express = require('express')
+const session = require('express-session')
 const { log } = console
 
 const app = express()
 const port = 3000
 app.use(express.json())
+app.use(session({
+  secret: 'magic',
+}))
+
+app.use((req, res, next) => {
+  req.session.userId = '99'
+  next()
+})
 
 app.use(bridge.middleware())
 

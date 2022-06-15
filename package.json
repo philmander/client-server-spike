@@ -1,6 +1,5 @@
 {
-  
-  "name" : "magic-bridge",
+  "name": "magic-bridge",
   "source": "app/client.js",
   "main": "dist/main.js",
   "scripts": {
@@ -10,7 +9,11 @@
   },
   "devDependencies": {
     "express": "^4.18.1",
+    "express-session": "^1.17.3",
     "mocha": "^10.0.0",
     "parcel": "^2.6.0"
+  },
+  "dependencies": {
+    "cookie": "^0.5.0"
   }
 }

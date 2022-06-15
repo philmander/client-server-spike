@@ -39,6 +39,11 @@ describe('Direct server calls', function () {
     assert.equal(area, 2000)
   })
 
+  it('calls a methods that uses a session local args', async () => {
+    const result = await bridge.saveUser('test@magic');
+    assert.equal(result, 'test@magic_99')
+  })
+
   it('throws if the method was not found', async () => {
     try {
       await bridge.lalala();

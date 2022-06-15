@@ -1,5 +1,5 @@
 import { h, Component, render } from 'preact'
-import { useState, useEffect } from 'preact/hooks';
+import { useState, useEffect } from 'preact/hooks'
 
 import magic from '../../app/client'
 
@@ -7,10 +7,10 @@ const bridge = magic()
 
 function App () {
   
-  const [val, setData] = useState(null);
+  const [val, setVal] = useState(null);
 
   useEffect(async () => {
-    setData(await bridge.retrieve())
+    setVal(await bridge.retrieve())
   }, []);
 
   async function saveToDatabase() {
@@ -23,4 +23,4 @@ function App () {
   </div>
 }
 
-render(<App/>, document.body);
+render(<App/>, document.body)

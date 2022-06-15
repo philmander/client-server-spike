@@ -1,3 +1,6 @@
+const cookie = require('cookie')
+const { callFn } = require('./helpers')
+
 const errorCodes = {
   INVALID_REQUEST: '-32600',
   METHOD_NOT_FOUND: '-32601',
@@ -105,8 +108,15 @@ module.exports = function(opts = {}) {
           }
       
           try {
+            const localArgs = {
+              request: req,
+              response: res,
+              session: req.session,
+              // a bit inefficient, parsing cookies even if they're not required as local args
+              cookies: req.headers.cookie ? cookie.parse(req.headers.cookie) : {},
+            }
             const { fn, ctx } = this.methods[method]
-            toSend.result = fn.call(ctx, ...params)
+            toSend.result = callFn(fn, ctx, params, localArgs)
           } catch(err) {
             return sendError(res, 500, id, errorCodes.INTERNAL_ERROR, `Internal server error: ${err.message}`)
           }

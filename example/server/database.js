@@ -1,8 +1,8 @@
 const crypto = require('crypto')
 
 class Database {
-  save() {
-    console.log('Saving to DB')
+  save(_session_) {
+    console.log(`Saving to DB for user ${_session_.userId}`)
   }
 
   retrieve() {
