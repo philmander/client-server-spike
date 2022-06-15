@@ -1,0 +1,21 @@
+{
+  "name": "magic-bridge-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "preact": "^10.8.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.5",
+    "@babel/plugin-transform-react-jsx": "^7.17.12",
+    "crypto-browserify": "^3.12.0",
+    "parcel": "^2.6.0"
+  }
+}
