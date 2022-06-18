@@ -1,14 +1,9 @@
 const mocha = require('mocha')
 const assert = require('assert')
-const magic = require('../client')
+const newBridge = require('../client')
 
-const bridge = magic({
-  url: 'http://localhost:3000/jsonrpc/bridge1'
-})
-
-const bridge2 = magic({
-  url: 'http://localhost:3000/jsonrpc/bridge2'
-})
+const bridge = newBridge('http://localhost:3000/jsonrpc/bridge1')
+const bridge2 = newBridge('http://localhost:3000/jsonrpc/bridge2')
 
 describe('Direct server calls', function () {
   it('calls a method on the server', async () => {

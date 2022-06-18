@@ -1,10 +1,10 @@
 import { h } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
+import Login from './Login'
 import Todo from './Todo';
+import newBridge from '../../../client/dist/main'
 
-import magic from '../../../client/dist/main'
-
-const bridge = magic()
+const bridge = newBridge('/jsonrpc/todos')
 
 const ENTER_KEY = 13;
 
@@ -12,19 +12,25 @@ let saveUpdates = false
 
 const App = () => {
   const [todos, setTodos] = useState([])
-  console.log('wat?1')
+  const [loggedIn, setLoggedIn ] = useState(false)
   useEffect(async () => {
-    console.log('wat?')
-    const todos = await bridge.getTodos()
-    setTodos(todos)
-    saveUpdates = true
-  }, [])
+    if(loggedIn) {
+      const todos = await bridge.getTodos()
+      setTodos(todos)
+      console.log('logged in can save updates')
+      saveUpdates = true
+    } else {
+      console.log('logged out cant save updates')
+      setTodos([])
+      saveUpdates = false
+    }
+  }, [ loggedIn ])
 
   useEffect(async () => {
-    if(saveUpdates) {
+    if (saveUpdates) {
       await bridge.putTodos(todos)
     }
-  }, [ todos ])
+  }, [todos])
 
   function handleNewTodo(ev) {
     if (ev.keyCode !== ENTER_KEY) {
@@ -67,43 +73,46 @@ const App = () => {
   }
 
   const activeTodoCount = todos.filter(todo => todo.completed).length
- 
+
   return (
-    <section class="todoapp">
-      <div>
-        <header class="header">
-          <h1>todos</h1>
-          <input
-            class="new-todo"
-            placeholder="What needs to be done?"
-            onKeyDown={handleNewTodo}
-            autoFocus={true}
-          />
-        </header>
-        {
-          todos.length && <section class="main">
+    <div>
+      <Login onLogin={() => { setLoggedIn(true)}} onLogout={() => { setLoggedIn(false)}} />
+      <section class="todoapp">
+        <div>
+          <header class="header">
+            <h1>todos</h1>
             <input
-              id="toggle-all"
-              class="toggle-all"
-              type="checkbox"
-              onChange={toggleAll}
-              checked={activeTodoCount === 0}
+              class="new-todo"
+              placeholder="What needs to be done?"
+              onKeyDown={handleNewTodo}
+              autoFocus={true}
             />
-            <label htmlFor="toggle-all" />
-            <ul class="todo-list">
-              {
-                todos.map(todo => (
-                  <Todo todo={todo}
-                    onToggle={handleToggle}
-                    onDestroy={handleDestroy}
-                    onSave={handleSave} />
-                ))
-              }
-            </ul>
-          </section>
-        }
-      </div>
-    </section>
+          </header>
+          {
+            todos.length && <section class="main">
+              <input
+                id="toggle-all"
+                class="toggle-all"
+                type="checkbox"
+                onChange={toggleAll}
+                checked={activeTodoCount === 0}
+              />
+              <label htmlFor="toggle-all" />
+              <ul class="todo-list">
+                {
+                  todos.map(todo => (
+                    <Todo todo={todo}
+                      onToggle={handleToggle}
+                      onDestroy={handleDestroy}
+                      onSave={handleSave} />
+                  ))
+                }
+              </ul>
+            </section>
+          }
+        </div>
+      </section>
+    </div>
   )
 }
 

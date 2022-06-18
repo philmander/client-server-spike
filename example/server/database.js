@@ -1,13 +1,17 @@
-let _todos = []
+let _todos = {}
 
 class Database {
 
-  putTodos(todos) {
-    _todos = todos
+  putTodos(todos, _cookies_) {
+    const userId = _cookies_.auth;
+    if(userId) {
+      _todos[userId] = todos
+    }
   }
 
-  getTodos() {
-    return _todos
+  getTodos(_cookies_) {
+    const userId = _cookies_.auth;
+    return _todos[userId] || []
   }
 }
 

@@ -47,7 +47,6 @@ const handler = {
   },
 }
 
-module.exports =  (opts = {}) => {
-  const { url = defaultUrl } = opts
+module.exports =  (url = defaultUrl) => {
   return new Proxy({ url } , handler)
 }
