@@ -3,6 +3,8 @@ const session = require('express-session')
 const bridge = require('../../bridge/index')()
 const Database = require('./database')
 
+const { log } = console
+
 const app = express()
 const port = 3001
 app.use(express.json())
@@ -10,16 +12,8 @@ app.use(session({
   secret: 'magic',
 }))
 
-const { log } = console
-
-app.use((req, res, next) => {
-  req.session.userId = '999'
-  next()
-})
-
 app.use(bridge.middleware())
-
-bridge.register(new Database());
+bridge.register(new Database())
 
 app.use('/', express.static('../client/dist'))
 

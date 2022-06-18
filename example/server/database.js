@@ -1,12 +1,13 @@
-const crypto = require('crypto')
+let _todos = []
 
 class Database {
-  save(_session_) {
-    console.log(`Saving to DB for user ${_session_.userId}`)
+
+  putTodos(todos) {
+    _todos = todos
   }
 
-  retrieve() {
-    return crypto.randomBytes(20).toString('hex')
+  getTodos() {
+    return _todos
   }
 }
 
