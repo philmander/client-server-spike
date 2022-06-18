@@ -12,7 +12,7 @@ app.use(session({
   secret: 'magic',
 }))
 
-app.use(bridge.middleware())
+app.use('/jsonrpc-bridge', bridge.middleware())
 bridge.register(new Database())
 
 app.use('/', express.static('../client/dist'))
