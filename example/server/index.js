@@ -1,6 +1,6 @@
 const express = require('express')
 const session = require('express-session')
-const bridge = require('../../bridge/index')()
+const newBridge = require('../../bridge/index')
 const Database = require('./database')
 
 const { log } = console
@@ -12,6 +12,7 @@ app.use(session({
   secret: 'magic',
 }))
 
+const bridge = newBridge()
 app.use('/jsonrpc-bridge', bridge.middleware())
 bridge.register(new Database())
 

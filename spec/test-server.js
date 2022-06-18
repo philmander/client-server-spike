@@ -1,6 +1,8 @@
 process.title = 'magic-bridge-test-server'
 
-const bridge = require('../bridge')()
+const newBridge = require('../bridge')
+
+const bridge = newBridge()
 
 bridge.register(function add() {
   return 20
@@ -66,7 +68,7 @@ app.use((req, res, next) => {
   next()
 })
 
-app.use(bridge.middleware())
+app.use('/jsonrpc-bridge', bridge.middleware())
 
 app.listen(port, () => {
   log(`Express server is running on port: ${port}`)

@@ -1,13 +1,30 @@
 import { h } from 'preact'
-import { useState } from 'preact/hooks'
+import { useEffect, useState } from 'preact/hooks'
 import Todo from './Todo';
 
-//import magic from '../../../client/dist/main'
+import magic from '../../../client/dist/main'
+
+const bridge = magic()
 
 const ENTER_KEY = 13;
 
+let saveUpdates = false
+
 const App = () => {
   const [todos, setTodos] = useState([])
+  console.log('wat?1')
+  useEffect(async () => {
+    console.log('wat?')
+    const todos = await bridge.getTodos()
+    setTodos(todos)
+    saveUpdates = true
+  }, [])
+
+  useEffect(async () => {
+    if(saveUpdates) {
+      await bridge.putTodos(todos)
+    }
+  }, [ todos ])
 
   function handleNewTodo(ev) {
     if (ev.keyCode !== ENTER_KEY) {
