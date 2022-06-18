@@ -1,4 +1,4 @@
-let url =  '/jsonrpc-bridge'
+const defaultUrl =  '/jsonrpc/bridge'
 
 function randomUUID() {
   const url = URL.createObjectURL(new Blob())
@@ -7,7 +7,7 @@ function randomUUID() {
   return id 
 }
 
-async function rpc(method, params) {
+async function rpc(url, method, params) {
   const id = randomUUID()
   const body = {
     jsonrpc: '2.0',
@@ -40,16 +40,14 @@ async function rpc(method, params) {
 }
 
 const handler = {
-  get(obj, prop) {
+  get({ url }, prop) {
     return async function() {
-      return rpc(prop, [ ...arguments ])
+      return rpc(url, prop, [ ...arguments ])
     }
   },
 }
 
 module.exports =  (opts = {}) => {
-  if(opts.url) {
-    url = opts.url
-  }
-  return new Proxy({}, handler)
+  const { url = defaultUrl } = opts
+  return new Proxy({ url } , handler)
 }

@@ -4,6 +4,8 @@ const newBridge = require('../bridge')
 
 const bridge = newBridge()
 
+const bridge2 = newBridge()
+
 bridge.register(function add() {
   return 20
 })
@@ -52,6 +54,24 @@ const rect = new Rectangle(50, 40)
 
 bridge.register(rect);
 
+class Circle {
+  constructor(radius) {
+    this.radius = parseInt(radius);
+  }
+
+  // Method
+  calcArea() {
+    return (Math.PI * Math.pow(this.radius, 2)).toFixed(2)
+  }
+
+  calcPerimeter() {
+    return (2 * Math.PI * this.radius).toFixed(2)
+  }
+}
+
+const circle = new Circle(100)
+bridge2.register(circle);
+
 const express = require('express')
 const session = require('express-session')
 const { log } = console
@@ -68,7 +88,8 @@ app.use((req, res, next) => {
   next()
 })
 
-app.use('/jsonrpc-bridge', bridge.middleware())
+app.use('/jsonrpc/bridge1', bridge.middleware())
+app.use('/jsonrpc/bridge2', bridge2.middleware())
 
 app.listen(port, () => {
   log(`Express server is running on port: ${port}`)

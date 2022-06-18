@@ -3,7 +3,11 @@ const assert = require('assert')
 const magic = require('../client')
 
 const bridge = magic({
-  url: 'http://localhost:3000/jsonrpc-bridge'
+  url: 'http://localhost:3000/jsonrpc/bridge1'
+})
+
+const bridge2 = magic({
+  url: 'http://localhost:3000/jsonrpc/bridge2'
 })
 
 describe('Direct server calls', function () {
@@ -69,5 +73,19 @@ describe('Direct server calls', function () {
     } catch(err) {
       assert.equal(err.message, 'JSON RPC error: Response id does not match request id')
     }
+  })
+
+  it('it can use multiple bridges', async () => {
+    const rectArea = await bridge.calcArea()
+    assert.equal(rectArea, 2000)
+
+    const circleArea = await bridge2.calcArea()
+    assert.equal(circleArea, 31415.93)
+
+    const rectPerimeter = await bridge.calcPerimeter()
+    assert.equal(rectPerimeter, 180)
+
+    const circlePerimeter = await bridge2.calcPerimeter()
+    assert.equal(circlePerimeter, 628.32)
   })
 })
