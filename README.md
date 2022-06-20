@@ -1,4 +1,4 @@
-# Magic Bridge
+Magic Bridge
 ====================
 
 Magic Bridge lets you call functions on a Node.JS server from a client, abstracting away HTTP.
@@ -149,6 +149,8 @@ are invisible to the client.
 
 Use arguments with these method names in any postion to have them injected:
 
+| Argument | Resolves to |
+|----------|-------------|
 | `_request_` | The (express) request object |
 | `_response_` | The (express) response object |
 | `_sessions_` | The (express) request session object (if using [express-session](https://github.com/expressjs/session) middleware|
