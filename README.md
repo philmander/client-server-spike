@@ -3,14 +3,14 @@ Magic Bridge
 
 Magic Bridge lets you call functions on a Node.JS server from a client, abstracting away HTTP.
 
-Register functions on the server:
+Register a function on the server:
 
 ```js
 const newBridge = require('@magic-bridge/bridge')
 // import bridge from '@magic-bridge/bridge'
 const bridge = newBridge()
 
-// register functions or or classes
+// register functions (or classes)
 bridge.register(function getServerThing() {
   return 'i am a string from server'
 }
@@ -20,13 +20,14 @@ const app = express()
 app.use('/jsonrpc/default', bridge.middleware())
 ```
 
-Now you can call them from the client:
+Now you can call it from the client:
 
 ```js
 const bridge = require('@magic-bridge/client')
 // import bridge from '@magic-bridge/client'
 const bridge = newBridge()
 
+// call a function on the server!
 const thingFromServer = await bridge.getServerThing()
 // thingFromServer === 'i am a string from server'
 ```
@@ -47,7 +48,34 @@ npm install @magic-bridge/client
 
 ## Usage
 
-Magic Bridge is designed to be used as Express middleware.
+### Create a bridge instance
+
+The Magic Bridge module exports a factory function for making new bridges both on the client and the server. 
+The server optionally accepts some advanced options:
+
+```js
+const newBridge = require('@magic-bridge/bridge')
+
+const bridge = newBridge()
+// or
+const bridge = newBridge({ opts })
+```
+
+| Option | Description | Type | Default |
+|----------|-------------|----|---------|
+| `ignoreMethodNameRegex` | Functions registered that match this regex will be ignored. Such as methods on a class starting with an underscore to denote that they are private | `regex` | `/^_/` |
+| `throwOnDup` | Will throw an error if more than one function is added with the same name | `boolean` | `true` | 
+
+
+The client accepts one optional arguemnt; the url/path of the [Magic Bridge middleware](#express)
+
+```js
+const newBridge = require('@magic-bridge/client')
+
+const bridge = newBridge() // uses /jsonrpc/default
+// or 
+const bridge = newBridge('/my-magic-bridge-url')
+```
 
 ### Registering functions
 
@@ -69,7 +97,7 @@ const obj = {
     return this.x
   }
 }
-bridge.register(func, obj)
+bridge.register(obj.func, obj)
 // client: await bridge.func() --> 99
 ```
 
@@ -106,6 +134,25 @@ class Clazz {
 const clazz = new Clazz()
 bridge.register(clazz)
 // client: await bridge.myMethod()
+```
+
+<a name=express></a>
+
+### Registering middleware with Express
+
+Magic Bridge is designed to be used as Express middleware. The default path used by
+the client is `/jsonrpc/default`, so the default set up is to do this:
+
+```js
+const app = express()
+app.use('/jsonrpc/default', bridge.middleware())
+```
+
+If you do use a different path, you must also configure the bridge side on the client to use it:
+
+```js
+// client side:
+const bridge = newBridge('/my-magic-bridge-path')
 ```
 
 <a name=multiple-bridges></a>
