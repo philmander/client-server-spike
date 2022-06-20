@@ -2,11 +2,8 @@
   "name": "@magic-bridge/root",
   "scripts": {
     "start": "node lib/spec/test-server",
-    "start-bg": "nohup node lib/spec/test-server.js &",
     "stop" : "pkill magic-bridge-test-server",
-    "pretest" : "npm run start-bg",
-    "test": "mocha 'lib/**/*.spec.js'",
-    "posttest" : "npm stop"
+    "test": "mocha 'lib/**/*.spec.js'"
   },
   "devDependencies": {
     "parcel": "^2.6.0",
