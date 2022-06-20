@@ -1,7 +1,7 @@
 const express = require('express')
 const cookieParser = require('cookie-parser');
 const { ensureLoggedIn } = require('connect-ensure-login')
-const newBridge = require('../../bridge/index')
+const newBridge = require('../../lib/bridge/index')
 const Database = require('./database')
 
 const { log } = console

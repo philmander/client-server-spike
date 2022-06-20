@@ -1,6 +1,6 @@
 import { h, createRef } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
-import newBridge from '../../../client/dist/main'
+import newBridge from '../../../lib/client/dist/main'
 
 const bridge = newBridge('/jsonrpc/auth')
 
