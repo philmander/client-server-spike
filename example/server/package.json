@@ -1,5 +1,5 @@
 {
-  "name": "magic-bridge-example-server",
+  "name": "@magic-bridge/example-server",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
