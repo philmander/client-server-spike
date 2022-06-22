@@ -1,14 +1,15 @@
 {
   "name": "@magic-bridge/root",
   "scripts": {
-    "start": "node lib/spec/test-server",
-    "stop" : "pkill magic-bridge-test-server",
+    "start": "nodemon lib/spec/test-server",
+    "stop": "pkill magic-bridge-test-server",
     "test": "mocha 'lib/**/*.spec.js'"
   },
   "devDependencies": {
-    "parcel": "^2.6.0",
-    "mocha": "^10.0.0",
     "express": "^4.18.1",
-    "express-session": "^1.17.3"
+    "express-session": "^1.17.3",
+    "mocha": "^10.0.0",
+    "nodemon": "^2.0.16",
+    "parcel": "^2.6.0"
   }
 }

@@ -130,10 +130,33 @@ class Clazz {
   myMethod() {
     return 99
   }
+  anotherMethod() {
+    return 88
+  }
 }
 const clazz = new Clazz()
 bridge.register(clazz)
-// client: await bridge.myMethod()
+// client: await bridge.myMethod() --> 99
+// client: await bridge.anotherMethod() --> 88
+```
+
+#### Functions on a plain object
+
+This is quite handy, espcially in combination with [multiple bridges](#multiple-bridges)
+
+```js
+const obj {
+  myFunction() {
+    return 99
+  }
+  anotherFunction() {
+    return 88
+  }
+}
+
+bridge.register(obj)
+// client: await bridge.myFunction() --> 99
+// client: await bridge.anotherFunction() --> 88
 ```
 
 <a name=express></a>
@@ -203,7 +226,7 @@ Use arguments with these method names in any postion to have them injected:
 | `_sessions_` | The (express) request session object (if using [express-session](https://github.com/expressjs/session) middleware|
 | `_cookie_`   | Parsed request cookies |
 
-Example: 
+Examples: 
 
 ```js
 function changeUsername(_session_, newUsername) {
@@ -211,3 +234,12 @@ function changeUsername(_session_, newUsername) {
   user.setUsername(newUsername)
   ...
 }
+```
+
+```js
+function changeUsername(_cookie_, newUsername) {
+  const user = db.getUser(_cookie_.token)
+  user.setUsername(newUsername)
+  ...
+}
+```
