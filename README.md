@@ -65,6 +65,8 @@ npm install @magic-bridge/client
 The Magic Bridge module exports a factory function for making new bridges both on the client and the server. 
 The server optionally accepts some advanced options:
 
+#### On the server
+
 ```js
 const newBridge = require('@magic-bridge/bridge')
 
@@ -79,6 +81,8 @@ const bridge = newBridge({ opts })
 | `throwOnDup` | Will throw an error if more than one function is added with the same name | `boolean` | `true` | 
 
 
+#### On the client
+
 The client accepts one optional arguemnt; the url/path of the [Magic Bridge middleware](#express)
 
 ```js
@@ -87,6 +91,13 @@ const newBridge = require('@magic-bridge/client')
 const bridge = newBridge() // uses /jsonrpc/default
 // or 
 const bridge = newBridge('/my-magic-bridge-url')
+```
+
+the client bridge is now ready to call functions on the server:
+
+```js
+// bridge calls must always be async
+const thingFromServer = await bridge.doServerThing()
 ```
 
 ### Registering functions
