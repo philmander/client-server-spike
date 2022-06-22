@@ -265,6 +265,6 @@ function changeUsername(newUsername, _cookies_) {
 
 ## Credits
 
-Magic Bridge is inspired by [JSON-RPC-Java (later renamed Jabsorb)](https://arthurblake.wordpress.com/2007/09/14/announcing-jabsorb-a-new-json-rpc-library/) a library I used circa 2007-8 to do Ajaxy stuff.
+Magic Bridge is inspired by [JSON-RPC-Java (later renamed Jabsorb)](https://arthurblake.wordpress.com/2007/09/14/announcing-jabsorb-a-new-json-rpc-library/) a library I used circa 2006-8 to do Ajaxy stuff.
 
 Magic bridge partially implements the [JSON-RPC 2.0 specification](https://www.jsonrpc.org/specification) (it doesn't do batches)
