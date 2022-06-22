@@ -48,6 +48,18 @@ npm install @magic-bridge/client
 
 ## Usage
 
+- [Create a bridge instance](#create-a-bridge-instance)
+- [Registering functions](#registering-functions)
+  - [Just a function](#just-a-function)
+  - [A function with context](#a-function-with-context)
+  - [A function with a given name](#a-function-with-a-given-name)
+  - [A function with a given name and context](#a-function-with-a-given-name-and-context)
+  - [An instance of a class](#an-instance-of-a-class)
+  - [A plain object](#functions-on-a-plain-object)
+- [Using middleware with Express](#using-middleware-with-express)
+- [Multple bridges](#multple-bridges)
+- [Local arg resolvers](#local-arg-resolvers)
+
 ### Create a bridge instance
 
 The Magic Bridge module exports a factory function for making new bridges both on the client and the server. 
@@ -159,9 +171,7 @@ bridge.register(obj)
 // client: await bridge.anotherFunction() --> 88
 ```
 
-<a name=express></a>
-
-### Registering middleware with Express
+### Using middleware with Express
 
 Magic Bridge is designed to be used as Express middleware. The default path used by
 the client is `/jsonrpc/default`, so the default set up is to do this:
@@ -177,8 +187,6 @@ If you do use a different path, you must also configure the bridge side on the c
 // client side:
 const bridge = newBridge('/my-magic-bridge-path')
 ```
-
-<a name=multiple-bridges></a>
 
 ### Multple bridges
 
@@ -223,8 +231,8 @@ Use arguments with these method names in any postion to have them injected:
 |----------|-------------|
 | `_request_` | The (express) request object |
 | `_response_` | The (express) response object |
-| `_sessions_` | The (express) request session object (if using [express-session](https://github.com/expressjs/session) middleware|
-| `_cookie_`   | Parsed request cookies |
+| `_session_` | The (express) request session object (if using [express-session](https://github.com/expressjs/session) middleware|
+| `_cookies_`   | Parsed request cookies |
 
 Examples: 
 
@@ -237,8 +245,8 @@ function changeUsername(_session_, newUsername) {
 ```
 
 ```js
-function changeUsername(_cookie_, newUsername) {
-  const user = db.getUser(_cookie_.token)
+function changeUsername(newUsername, _cookies_) {
+  const user = db.getUser(_cookies_.token)
   user.setUsername(newUsername)
   ...
 }
