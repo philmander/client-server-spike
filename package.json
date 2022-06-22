@@ -1,6 +1,13 @@
 {
   "name": "@magic-bridge/root",
+  "author": "Phil Mander <philip.mander@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/philmander/magic-bridge.git"
+  },
   "scripts": {
+    "prepare": "npm test && npm run build",
+    "build": "npm run build --prefix lib/client",
     "start": "nodemon lib/spec/test-server",
     "stop": "pkill magic-bridge-test-server",
     "test": "mocha 'lib/**/*.spec.js'"
@@ -11,5 +18,10 @@
     "mocha": "^10.0.0",
     "nodemon": "^2.0.16",
     "parcel": "^2.6.0"
-  }
+  },
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ]
 }

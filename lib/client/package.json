@@ -1,9 +1,19 @@
 {
   "name": "@magic-bridge/client",
+  "author": "Phil Mander <philip.mander@gmail.com>",
   "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/philmander/magic-bridge.git"
+  },
   "source": "index.js",
   "main": "dist/main.js",
   "scripts": {
     "build": "parcel build"
-  }
+  },
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ]
 }

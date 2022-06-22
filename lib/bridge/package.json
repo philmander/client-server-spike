@@ -1,10 +1,21 @@
 {
   "name": "@magic-bridge/bridge",
   "version": "0.1.0",
+  "author": "Phil Mander <philip.mander@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/philmander/magic-bridge.git"
+  },
   "scripts": {
     "test": "mocha ./spec/*.spec.js"
   },
   "dependencies": {
     "cookie": "~0.5.0"
-  }
+  },
+  "main" : "./index",
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ]
 }
