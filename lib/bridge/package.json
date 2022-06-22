@@ -2,7 +2,7 @@
   "name": "@magic-bridge/bridge",
   "version": "0.1.0",
   "scripts": {
-    "test": "mocha ./spec/helper.spec.js"
+    "test": "mocha ./spec/*.spec.js"
   },
   "dependencies": {
     "cookie": "~0.5.0"
