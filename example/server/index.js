@@ -1,7 +1,8 @@
 const express = require('express')
 const cookieParser = require('cookie-parser');
 const { ensureLoggedIn } = require('connect-ensure-login')
-const newBridge = require('../../lib/bridge/index')
+//const newBridge = require('../../lib/bridge/index')
+const newBridge = require('@magic-bridge/bridge')
 const Database = require('./database')
 
 const { log } = console

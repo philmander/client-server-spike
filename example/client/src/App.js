@@ -2,7 +2,8 @@ import { h } from 'preact'
 import { useEffect, useState } from 'preact/hooks'
 import Login from './Login'
 import Todo from './Todo';
-import newBridge from '../../../lib/client/dist/main'
+//import newBridge from '../../../lib/client/dist/main'
+import newBridge from '@magic-bridge/client'
 
 const bridge = newBridge('/jsonrpc/todos')
 
