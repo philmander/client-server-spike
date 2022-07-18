@@ -72,7 +72,7 @@ const newBridge = require('@magic-bridge/bridge')
 
 const bridge = newBridge()
 // or
-const bridge = newBridge({ opts })
+const bridge = newBridge(opts)
 ```
 
 | Option | Description | Type | Default |
